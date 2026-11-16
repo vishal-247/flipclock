@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { AppHeader } from './AppHeader';
 import { AppNavigation, ActiveTab } from './AppNavigation';
 import { FlipClock } from '../features/clock/FlipClock';
 import { CountdownTimer } from '../features/timer/CountdownTimer';
@@ -41,12 +40,6 @@ export const App: React.FC = () => {
     });
   };
 
-  const handleToggleFormat = () => {
-    handleUpdateSettings({
-      clockFormat: settings.clockFormat === '12h' ? '24h' : '12h',
-    });
-  };
-
   const handleToggleSeconds = () => {
     handleUpdateSettings({
       showSeconds: !settings.showSeconds,
@@ -61,14 +54,6 @@ export const App: React.FC = () => {
 
   return (
     <div className={`app-container ${isFullscreen ? 'fullscreen-mode' : ''}`}>
-      <AppHeader
-        theme={settings.theme}
-        isFullscreen={isFullscreen}
-        onToggleTheme={handleToggleTheme}
-        onToggleFullscreen={toggleFullscreen}
-        onOpenSettings={() => setIsSettingsOpen(true)}
-      />
-
       <AppNavigation
         activeTab={activeTab}
         onTabChange={setActiveTab}
@@ -81,7 +66,9 @@ export const App: React.FC = () => {
             showSeconds={settings.showSeconds}
             enableSound={settings.flipSound}
             isFullscreen={isFullscreen}
-            onToggleFormat={handleToggleFormat}
+            theme={settings.theme}
+            onToggleTheme={handleToggleTheme}
+            onOpenSettings={() => setIsSettingsOpen(true)}
             onToggleSeconds={handleToggleSeconds}
             onToggleSound={handleToggleSound}
             onToggleFullscreen={toggleFullscreen}
@@ -117,4 +104,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-

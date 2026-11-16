@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppTheme } from '../settings/types';
-import { Clock, Moon, Sun, Settings, Maximize2, Minimize2 } from 'lucide-react';
+import { Moon, Sun, Settings, Maximize2, Minimize2 } from 'lucide-react';
 
 interface AppHeaderProps {
   theme: AppTheme;
@@ -20,8 +20,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   return (
     <header className="app-header">
       <div className="app-brand">
-        <Clock className="app-brand-icon" />
-        <span>My Clock</span>
+ 
       </div>
 
       <div className="app-header-actions">

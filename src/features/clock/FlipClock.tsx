@@ -2,8 +2,18 @@ import React from 'react';
 import { useClock } from '../../hooks/useClock';
 import { FlipUnit } from '../../components/flip/FlipUnit';
 import { FlipSeparator } from '../../components/flip/FlipSeparator';
-import { ClockFormat } from '../../settings/types';
-import { Maximize2, Minimize2, Volume2, VolumeX, Eye, EyeOff } from 'lucide-react';
+import { ClockFormat, AppTheme } from '../../settings/types';
+import {
+  Maximize2,
+  Minimize2,
+  Volume2,
+  VolumeX,
+  Eye,
+  EyeOff,
+  Sun,
+  Moon,
+  Settings,
+} from 'lucide-react';
 import '../../styles/clock.css';
 
 interface FlipClockProps {
@@ -11,7 +21,9 @@ interface FlipClockProps {
   showSeconds: boolean;
   enableSound: boolean;
   isFullscreen: boolean;
-  onToggleFormat: () => void;
+  theme: AppTheme;
+  onToggleTheme: () => void;
+  onOpenSettings: () => void;
   onToggleSeconds: () => void;
   onToggleSound: () => void;
   onToggleFullscreen: () => void;
@@ -22,7 +34,9 @@ export const FlipClock: React.FC<FlipClockProps> = ({
   showSeconds,
   enableSound,
   isFullscreen,
-  onToggleFormat,
+  theme,
+  onToggleTheme,
+  onOpenSettings,
   onToggleSeconds,
   onToggleSound,
   onToggleFullscreen,
@@ -80,16 +94,29 @@ export const FlipClock: React.FC<FlipClockProps> = ({
         )}
       </div>
 
-      {/* Clock Controls */}
+      {/* Clock Controls Bar */}
       <div className="clock-controls-bar">
+        {/* 1. Settings Icon Button */}
         <button
-          className={`clock-toggle-btn ${format === '24h' ? 'active' : ''}`}
-          onClick={onToggleFormat}
-          title="Switch 12h / 24h format"
+          className="clock-toggle-btn"
+          onClick={onOpenSettings}
+          title="Open settings"
+          aria-label="Settings"
         >
-          {format === '12h' ? '12-Hour' : '24-Hour'}
+          <Settings size={15} />
         </button>
 
+        {/* 2. Theme Toggle Icon Button */}
+        <button
+          className="clock-toggle-btn"
+          onClick={onToggleTheme}
+          title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+        </button>
+
+        {/* 3. Seconds Toggle Button */}
         <button
           className={`clock-toggle-btn ${showSeconds ? 'active' : ''}`}
           onClick={onToggleSeconds}
@@ -99,6 +126,7 @@ export const FlipClock: React.FC<FlipClockProps> = ({
           <span>Seconds</span>
         </button>
 
+        {/* 4. Mute / Sound Toggle */}
         <button
           className={`clock-toggle-btn ${enableSound ? 'active' : ''}`}
           onClick={onToggleSound}
@@ -107,6 +135,7 @@ export const FlipClock: React.FC<FlipClockProps> = ({
           {enableSound ? <Volume2 size={15} /> : <VolumeX size={15} />}
         </button>
 
+        {/* 5. Fullscreen Toggle */}
         <button
           className="clock-toggle-btn"
           onClick={onToggleFullscreen}
@@ -130,4 +159,3 @@ export const FlipClock: React.FC<FlipClockProps> = ({
     </div>
   );
 };
-

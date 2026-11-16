@@ -1,5 +1,6 @@
 @import './variables.css';
 @import './flipcard.css';
+@import './dynamicIsland.css';
 
 * {
   margin: 0;

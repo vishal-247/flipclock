@@ -1,0 +1,202 @@
+/* Apple Dynamic Island - Fluid Spring & Glassmorphism Navigation */
+
+.island-wrapper {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 16px 14px;
+}
+
+/* Base Island Capsule */
+.dynamic-island {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  will-change: width, height, border-radius, background, transform, box-shadow;
+  /* Ultra-fluid Apple spring physics curve */
+  transition:
+    width 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    border-radius 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dynamic-island:hover {
+  transform: translateY(-1px);
+}
+
+/* 1. CONTRACTED STATE: Cute Purple Squircle (Image 2) */
+.dynamic-island.contracted {
+  width: 48px;
+  height: 48px;
+  border-radius: 19px;
+  background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 8px 24px -4px rgba(139, 92, 246, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.dynamic-island.contracted:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow:
+    0 12px 28px -2px rgba(139, 92, 246, 0.65),
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    inset 0 1px 2px rgba(255, 255, 255, 0.55);
+}
+
+/* Mascot Eyes inside Contracted State */
+.island-mascot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.22s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.mascot-eye {
+  width: 5.5px;
+  height: 14px;
+  background: #111018;
+  border-radius: 999px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  animation: eye-blink 4.2s infinite ease-in-out;
+}
+
+.mascot-eye.right {
+  animation-delay: 0.05s;
+}
+
+@keyframes eye-blink {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+/* 2. EXPANDED STATE: Sleek Apple Glass Pill Bar (Image 1) */
+.dynamic-island.expanded {
+  width: 328px;
+  height: 46px;
+  border-radius: 9999px;
+  background: rgba(18, 19, 24, 0.72);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4px;
+  box-shadow:
+    0 16px 38px -6px rgba(0, 0, 0, 0.65),
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* Hide mascot when expanded */
+.dynamic-island.expanded .island-mascot {
+  opacity: 0;
+  transform: scale(0.4);
+  pointer-events: none;
+}
+
+/* Navigation Content Inside Expanded Pill */
+.island-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.28s 0.08s ease, transform 0.35s 0.08s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dynamic-island.contracted .island-content {
+  opacity: 0;
+  transform: scale(0.75);
+  pointer-events: none;
+}
+
+/* Tab buttons inside the Island */
+.island-tab-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.52);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease, transform 0.15s ease;
+}
+
+.island-tab-btn:hover:not(.active) {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-0.5px);
+}
+
+/* Active Tab: Distinct outlined capsule from Image 1 */
+.island-tab-btn.active {
+  color: #ffffff;
+  font-weight: 600;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.island-tab-btn.active:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Light Theme Adaptations */
+[data-theme="light"] .dynamic-island.expanded {
+  background: rgba(245, 246, 250, 0.78);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 16px 36px -6px rgba(0, 0, 0, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .island-tab-btn {
+  color: rgba(18, 19, 24, 0.55);
+}
+
+[data-theme="light"] .island-tab-btn:hover:not(.active) {
+  color: rgba(18, 19, 24, 0.9);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .island-tab-btn.active {
+  color: #121316;
+  border: 1.5px solid rgba(18, 19, 24, 0.85);
+  background: rgba(0, 0, 0, 0.05);
+}

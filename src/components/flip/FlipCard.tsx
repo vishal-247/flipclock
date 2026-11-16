@@ -7,38 +7,61 @@ interface FlipCardProps {
   enableSound?: boolean;
 }
 
+/**
+ * Split-flap flip card with physically accurate timing:
+ *
+ *   T = 0 ms    Front leaf starts folding (old digit top half folds away)
+ *   T = 300 ms  Front leaf reaches -90°, reveals static top → new digit
+ *   T = 300 ms  Back leaf starts unfolding from 90° (new digit bottom half)
+ *   T = 525 ms  Back leaf ~75 % unfolded, nearly flat → static bottom
+ *               safely switches from old → new (hidden behind leaf)
+ *   T = 600 ms  Back leaf lands at 0°
+ *   T = 650 ms  Animated leaves removed, card at rest
+ *
+ * Static top:    always shows `current` (hidden behind front-leaf at start)
+ * Static bottom: shows `previous` until the back-leaf covers it, then `current`
+ */
 export const FlipCard: React.FC<FlipCardProps> = ({
   digit,
   size = 'lg',
   enableSound = true,
 }) => {
   const strDigit = String(digit);
-  const [current, setCurrent] = useState<string>(strDigit);
-  const [previous, setPrevious] = useState<string>(strDigit);
-  const [isFlipping, setIsFlipping] = useState<boolean>(false);
-  const [flipKey, setFlipKey] = useState<number>(0);
 
+  const [current, setCurrent] = useState(strDigit);
+  const [previous, setPrevious] = useState(strDigit);
+  const [bottomDisplay, setBottomDisplay] = useState(strDigit);
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [flipKey, setFlipKey] = useState(0);
+
+  // Refs so the effect only depends on strDigit
   const soundRef = useRef(enableSound);
   soundRef.current = enableSound;
 
   const currentRef = useRef(current);
   currentRef.current = current;
 
-  const timerRef = useRef<number | null>(null);
+  const endTimerRef = useRef<number | null>(null);
+  const bottomTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (strDigit !== currentRef.current) {
-      // Cancel any in-progress flip
-      if (timerRef.current) {
-        window.clearTimeout(timerRef.current);
-        timerRef.current = null;
+      // Clear any in-progress timers
+      if (endTimerRef.current) {
+        window.clearTimeout(endTimerRef.current);
+        endTimerRef.current = null;
+      }
+      if (bottomTimerRef.current) {
+        window.clearTimeout(bottomTimerRef.current);
+        bottomTimerRef.current = null;
       }
 
       const oldDigit = currentRef.current;
 
-      // Batch all state updates together
+      // Kick off the flip
       setPrevious(oldDigit);
       setCurrent(strDigit);
+      setBottomDisplay(oldDigit);   // bottom keeps OLD digit for now
       setIsFlipping(true);
       setFlipKey((k) => k + 1);
 
@@ -46,47 +69,56 @@ export const FlipCard: React.FC<FlipCardProps> = ({
         audioService.playFlip();
       }
 
-      // Clean up animation after it completes (600ms total: fold 0.3s + unfold 0.3s)
-      timerRef.current = window.setTimeout(() => {
+      // At ~75 % of the back-leaf unfold the leaf is nearly flat and
+      // fully covers the static bottom → safe to swap the digit behind it.
+      // Back-leaf: 0.3 s delay + 0.3 s duration → 75 % = 0.3 + 0.225 = 0.525 s
+      const capturedDigit = strDigit;
+      bottomTimerRef.current = window.setTimeout(() => {
+        setBottomDisplay(capturedDigit);
+        bottomTimerRef.current = null;
+      }, 525);
+
+      // Remove animated leaves after full animation completes
+      endTimerRef.current = window.setTimeout(() => {
         setIsFlipping(false);
-        timerRef.current = null;
-      }, 50);
+        endTimerRef.current = null;
+      }, 650);
     }
-    // Only react to the incoming digit prop changing
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [strDigit]);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (timerRef.current) window.clearTimeout(timerRef.current);
+      if (endTimerRef.current) window.clearTimeout(endTimerRef.current);
+      if (bottomTimerRef.current) window.clearTimeout(bottomTimerRef.current);
     };
   }, []);
 
   return (
     <div className={`flip-card size-${size}`}>
       {/*
-        STATIC LAYERS — always show the CURRENT (newest) digit.
-        These are the "destination" state. The animated leaves
-        provide the visual transition ON TOP of these.
+        STATIC TOP — always shows the NEW digit.
+        Hidden behind the front-leaf (old digit) at the start;
+        revealed when the front-leaf folds past ~45°.
       */}
       <div className="flip-half flip-half-top">
         <span className="flip-digit-text">{current}</span>
       </div>
 
+      {/*
+        STATIC BOTTOM — shows the OLD digit while the back-leaf
+        is unfolding over it, then switches to the NEW digit once
+        the leaf is opaque enough to hide the swap (~75 % unfolded).
+      */}
       <div className="flip-half flip-half-bottom">
-        <span className="flip-digit-text">{current}</span>
+        <span className="flip-digit-text">{bottomDisplay}</span>
       </div>
 
-      {/* ANIMATED LEAVES — only present during a flip transition */}
+      {/* ANIMATED LEAVES — only present during a flip */}
       {isFlipping && (
         <>
-          {/*
-            FRONT LEAF (top half):
-            Shows the OLD digit's top half.
-            Starts flat (covering static top) then folds DOWN to -90°,
-            revealing the static top (new digit) behind it.
-          */}
+          {/* Front leaf: OLD digit top-half, folds down 0° → -90° */}
           <div key={`front-${flipKey}`} className="flip-leaf-front">
             <div className="flip-half flip-half-top" style={{ position: 'relative', height: '100%' }}>
               <span className="flip-digit-text">{previous}</span>
@@ -94,12 +126,7 @@ export const FlipCard: React.FC<FlipCardProps> = ({
             </div>
           </div>
 
-          {/*
-            BACK LEAF (bottom half):
-            Shows the NEW digit's bottom half.
-            Starts at 90° (edge-on, hidden) then unfolds DOWN to 0°,
-            landing flush on the static bottom (same digit — seamless).
-          */}
+          {/* Back leaf: NEW digit bottom-half, unfolds 90° → 0° */}
           <div key={`back-${flipKey}`} className="flip-leaf-back">
             <div className="flip-half flip-half-bottom" style={{ position: 'relative', height: '100%' }}>
               <span className="flip-digit-text">{current}</span>

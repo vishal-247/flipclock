@@ -27,12 +27,12 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
   };
 
   const handleMouseLeave = () => {
-    // 160ms fluid debounce so moving the mouse between buttons doesn't abruptly snap closed
+    // 250ms fluid debounce so moving the mouse between buttons doesn't abruptly snap closed
     leaveTimerRef.current = window.setTimeout(() => {
       setIsHovered(false);
       setIsTouched(false);
       leaveTimerRef.current = null;
-    }, 160);
+    }, 250);
   };
 
   const handleIslandClick = () => {

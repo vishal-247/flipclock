@@ -1,0 +1,81 @@
+:root {
+  /* Default Dark Theme (Reference style) */
+  --bg-primary: #0a0a0c;
+  --bg-secondary: #121316;
+  --bg-tertiary: #18191e;
+  --bg-surface: #1e2026;
+  
+  --card-bg-top: #1f2026;
+  --card-bg-bottom: #18191f;
+  --card-border: rgba(255, 255, 255, 0.07);
+  --card-highlight: rgba(255, 255, 255, 0.05);
+  --card-shadow: 0 20px 45px rgba(0, 0, 0, 0.75), 0 4px 12px rgba(0, 0, 0, 0.5);
+  --card-seam: #0d0e11;
+  --card-hinge: #101115;
+  --card-hinge-pin: #40434f;
+  
+  --text-primary: #f4f4f7;
+  --text-secondary: #8e909a;
+  --text-muted: #52545f;
+  --text-card: #f8f8fc;
+  
+  --accent-primary: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-active: #1d4ed8;
+  --accent-glow: rgba(59, 130, 246, 0.35);
+
+  --accent-work: #ef4444;
+  --accent-break: #10b981;
+  --accent-long-break: #8b5cf6;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.16);
+  
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-card: 14px;
+  
+  --font-display: 'Bebas Neue', 'JetBrains Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-spring: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] {
+  --bg-primary: #e8e9ed;
+  --bg-secondary: #f2f3f7;
+  --bg-tertiary: #dcdcdd;
+  --bg-surface: #ffffff;
+  
+  /* In luxury flip clocks, the cards remain dark charcoal for contrast and authenticity, or sleek deep slate */
+  --card-bg-top: #24262e;
+  --card-bg-bottom: #1b1d24;
+  --card-border: rgba(0, 0, 0, 0.15);
+  --card-highlight: rgba(255, 255, 255, 0.08);
+  --card-shadow: 0 16px 36px rgba(0, 0, 0, 0.28), 0 3px 10px rgba(0, 0, 0, 0.15);
+  --card-seam: #121317;
+  --card-hinge: #101115;
+  --card-hinge-pin: #5c6070;
+  
+  --text-primary: #121316;
+  --text-secondary: #5e626e;
+  --text-muted: #8c909e;
+  --text-card: #f8f8fc;
+  
+  --accent-primary: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-active: #1e40af;
+  --accent-glow: rgba(37, 99, 235, 0.25);
+
+  --accent-work: #dc2626;
+  --accent-break: #059669;
+  --accent-long-break: #7c3aed;
+
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.18);
+}

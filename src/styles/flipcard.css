@@ -1,0 +1,296 @@
+/* Split-Flap 3D Transforms and Authentic Card Design */
+
+.flip-clock-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 24px);
+  user-select: none;
+  perspective: 1200px;
+}
+
+.flip-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.flip-unit-digits {
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, 0.8vw, 10px);
+}
+
+.flip-unit-label {
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+
+/* Individual Flip Card */
+.flip-card {
+  position: relative;
+  width: var(--card-width, 100px);
+  height: var(--card-height, 140px);
+  perspective: 900px;
+  transform-style: preserve-3d;
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-shadow);
+  background: var(--card-bg-bottom);
+}
+
+/* Card sizing variants */
+.flip-card.size-lg {
+  --card-width: clamp(74px, 12vw, 130px);
+  --card-height: clamp(106px, 17vw, 185px);
+  --font-size: clamp(78px, 13vw, 142px);
+}
+
+.flip-card.size-md {
+  --card-width: clamp(52px, 8.5vw, 92px);
+  --card-height: clamp(76px, 12vw, 132px);
+  --font-size: clamp(54px, 9vw, 98px);
+}
+
+.flip-card.size-sm {
+  --card-width: clamp(38px, 6vw, 64px);
+  --card-height: clamp(54px, 8.5vw, 92px);
+  --font-size: clamp(38px, 6.2vw, 68px);
+}
+
+/* Fullscreen expanded sizing */
+.fullscreen-mode .flip-card.size-lg {
+  --card-width: clamp(100px, 15vw, 190px);
+  --card-height: clamp(145px, 22vw, 270px);
+  --font-size: clamp(108px, 17vw, 210px);
+}
+
+.fullscreen-mode .flip-card.size-md {
+  --card-width: clamp(75px, 11vw, 135px);
+  --card-height: clamp(110px, 16vw, 192px);
+  --font-size: clamp(80px, 12vw, 148px);
+}
+
+.fullscreen-mode .flip-card.size-sm {
+  --card-width: clamp(50px, 7.5vw, 95px);
+  --card-height: clamp(72px, 11vw, 136px);
+  --font-size: clamp(52px, 8vw, 104px);
+}
+
+/* Halves of the card */
+.flip-half {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  box-sizing: border-box;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-half-top {
+  top: 0;
+  border-top-left-radius: var(--radius-card);
+  border-top-right-radius: var(--radius-card);
+  background: linear-gradient(180deg, #272832 0%, var(--card-bg-top) 100%);
+  border: 1px solid var(--card-border);
+  border-bottom: none;
+  transform-origin: bottom center;
+}
+
+.flip-half-bottom {
+  bottom: 0;
+  border-bottom-left-radius: var(--radius-card);
+  border-bottom-right-radius: var(--radius-card);
+  background: linear-gradient(180deg, var(--card-bg-bottom) 0%, #131418 100%);
+  border: 1px solid var(--card-border);
+  border-top: none;
+  transform-origin: top center;
+}
+
+/* Digit typography inside halves */
+.flip-digit-text {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: var(--card-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: var(--font-size);
+  font-weight: 800;
+  line-height: var(--card-height);
+  color: var(--text-card);
+  text-align: center;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.flip-half-top .flip-digit-text {
+  top: 0;
+}
+
+.flip-half-bottom .flip-digit-text {
+  bottom: 0;
+}
+
+/* Central horizontal split line seam */
+.flip-card::after {
+  content: '';
+  position: absolute;
+  top: calc(50% - 1px);
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--card-seam);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06), 0 -1px 0 rgba(0, 0, 0, 0.7);
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Mechanical Side Hinges */
+.flip-hinge-left,
+.flip-hinge-right {
+  position: absolute;
+  top: calc(50% - 7px);
+  width: 4px;
+  height: 14px;
+  background: var(--card-hinge);
+  border: 1px solid var(--card-hinge-pin);
+  border-radius: 2px;
+  z-index: 25;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.flip-hinge-left {
+  left: -2px;
+}
+
+.flip-hinge-right {
+  right: -2px;
+}
+
+/* Shadow overlays that provide 3D lighting during flap rotation */
+.flip-shadow-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* 3D Animations */
+.flip-leaf-front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  z-index: 10;
+  animation: flip-fold-down 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+}
+
+.flip-leaf-front .flip-shadow-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+  animation: shadow-in 0.22s ease-in forwards;
+}
+
+.flip-leaf-back {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  z-index: 12;
+  transform: rotateX(90deg);
+  animation: flip-unfold-down 0.22s cubic-bezier(0.215, 0.61, 0.355, 1) 0.2s forwards;
+}
+
+.flip-leaf-back .flip-shadow-overlay {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent);
+  animation: shadow-out 0.22s ease-out 0.2s forwards;
+}
+
+@keyframes flip-fold-down {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-90deg);
+  }
+}
+
+@keyframes flip-unfold-down {
+  0% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes shadow-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes shadow-out {
+  0% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Separator Colon Dots */
+.flip-separator {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(14px, 2.5vw, 24px);
+  padding: 0 clamp(2px, 0.5vw, 6px);
+  height: var(--card-height, 140px);
+}
+
+.flip-separator-dot {
+  width: clamp(7px, 1.1vw, 13px);
+  height: clamp(7px, 1.1vw, 13px);
+  border-radius: 50%;
+  background: var(--text-secondary);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+/* AM / PM Badge */
+.flip-ampm-badge {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 8px;
+  background: var(--card-bg-bottom);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 1.1vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  align-self: flex-start;
+  margin-top: 4px;
+}

@@ -8,3 +8,4 @@ export const FlipSeparator: React.FC = () => {
     </div>
   );
 };
+

@@ -42,3 +42,4 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
     </nav>
   );
 };
+

@@ -74,3 +74,4 @@ export function useClock(format: ClockFormat = '12h') {
 
   return state;
 }
+

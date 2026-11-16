@@ -35,3 +35,4 @@ export const DEFAULT_SETTINGS: AppSettings = {
     autoStartFocus: false,
   },
 };
+

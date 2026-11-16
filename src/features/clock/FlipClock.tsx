@@ -130,3 +130,4 @@ export const FlipClock: React.FC<FlipClockProps> = ({
     </div>
   );
 };
+

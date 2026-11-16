@@ -167,3 +167,4 @@ export function useTimer(enableSound = true, enableNotification = true) {
     setDuration,
   };
 }
+

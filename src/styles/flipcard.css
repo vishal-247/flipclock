@@ -193,6 +193,8 @@
   height: 50%;
   transform-origin: bottom center;
   transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   z-index: 10;
   animation: flip-fold-down 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
 }
@@ -210,14 +212,16 @@
   height: 50%;
   transform-origin: top center;
   transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   z-index: 12;
   transform: rotateX(90deg);
-  animation: flip-unfold-down 0.22s cubic-bezier(0.215, 0.61, 0.355, 1) 0.2s forwards;
+  animation: flip-unfold-down 0.22s cubic-bezier(0.215, 0.61, 0.355, 1) 0.2s both;
 }
 
 .flip-leaf-back .flip-shadow-overlay {
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent);
-  animation: shadow-out 0.22s ease-out 0.2s forwards;
+  animation: shadow-out 0.22s ease-out 0.2s both;
 }
 
 @keyframes flip-fold-down {

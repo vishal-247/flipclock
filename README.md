@@ -139,3 +139,4 @@ To generate the release APK/AAB:
 ```bash
 npm run tauri android build
 ```
+

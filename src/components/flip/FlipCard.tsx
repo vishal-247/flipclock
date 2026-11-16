@@ -17,35 +17,61 @@ export const FlipCard: React.FC<FlipCardProps> = ({
   const [previous, setPrevious] = useState<string>(strDigit);
   const [isFlipping, setIsFlipping] = useState<boolean>(false);
   const [flipId, setFlipId] = useState<number>(0);
+
+  const soundRef = useRef<boolean>(enableSound);
+  soundRef.current = enableSound;
+
+  const currentRef = useRef<string>(current);
+  currentRef.current = current;
+
   const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (strDigit !== current) {
+    // When incoming digit changes from the currently displayed value
+    if (strDigit !== currentRef.current) {
       if (timerRef.current) {
         window.clearTimeout(timerRef.current);
       }
 
-      setPrevious(current);
+      const prev = currentRef.current;
+      setPrevious(prev);
       setCurrent(strDigit);
       setIsFlipping(true);
-      setFlipId((prev) => prev + 1);
+      setFlipId((id) => id + 1);
 
-      if (enableSound) {
+      if (soundRef.current) {
         audioService.playFlip();
       }
 
+      // 450ms covers the total 420ms animation with a safe margin
       timerRef.current = window.setTimeout(() => {
         setIsFlipping(false);
         setPrevious(strDigit);
+        timerRef.current = null;
       }, 450);
     }
+  }, [strDigit]); // ONLY depend on strDigit so effect cleanup doesn't prematurely cancel timer!
 
+  // Cleanup on unmount
+  useEffect(() => {
     return () => {
       if (timerRef.current) {
         window.clearTimeout(timerRef.current);
       }
     };
-  }, [strDigit, current, enableSound]);
+  }, []);
+
+  const handleAnimationEnd = (e: React.AnimationEvent) => {
+    // When bottom leaf unfolds completely to 0deg, settle the card immediately
+    if (e.animationName.includes('flip-unfold')) {
+      if (timerRef.current) {
+        window.clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      setIsFlipping(false);
+      setPrevious(current);
+    }
+  };
 
   return (
     <div className={`flip-card size-${size}`}>
@@ -54,7 +80,7 @@ export const FlipCard: React.FC<FlipCardProps> = ({
         <span className="flip-digit-text">{current}</span>
       </div>
 
-      {/* 2. Static Bottom: shows the outgoing previous value until new unfolds */}
+      {/* 2. Static Bottom: shows previous during flip, current at rest */}
       <div className="flip-half flip-half-bottom">
         <span className="flip-digit-text">{isFlipping ? previous : current}</span>
       </div>
@@ -71,7 +97,11 @@ export const FlipCard: React.FC<FlipCardProps> = ({
           </div>
 
           {/* Bottom Leaf unfolds down (showing current digit bottom half) */}
-          <div key={`back-${flipId}`} className="flip-leaf-back">
+          <div
+            key={`back-${flipId}`}
+            className="flip-leaf-back"
+            onAnimationEnd={handleAnimationEnd}
+          >
             <div className="flip-half flip-half-bottom">
               <span className="flip-digit-text">{current}</span>
               <div className="flip-shadow-overlay" />

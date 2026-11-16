@@ -184,24 +184,31 @@
   transition: opacity 0.3s ease;
 }
 
-/* 3D Animations */
+/* 3D Animations
+ *
+ * Physics: a split-flap card is one physical flap hinged at the centre.
+ *   1. The TOP half folds down from 0° to -90° (old digit disappears).
+ *   2. The BOTTOM half continues the same motion from 90° to 0° (new digit lands).
+ * The bottom unfold starts the instant the top fold finishes — no dead gap.
+ */
 .flip-leaf-front {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 50%;
+  overflow: hidden;
   transform-origin: bottom center;
   transform-style: preserve-3d;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   z-index: 10;
-  animation: flip-fold-down 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+  animation: flip-fold-down 0.3s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards;
 }
 
 .flip-leaf-front .flip-shadow-overlay {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
-  animation: shadow-in 0.22s ease-in forwards;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+  animation: shadow-in 0.3s ease-in forwards;
 }
 
 .flip-leaf-back {
@@ -210,18 +217,20 @@
   left: 0;
   width: 100%;
   height: 50%;
+  overflow: hidden;
   transform-origin: top center;
   transform-style: preserve-3d;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   z-index: 12;
+  /* Start hidden at 90°; begin unfolding exactly when the top fold finishes (0.3s) */
   transform: rotateX(90deg);
-  animation: flip-unfold-down 0.22s cubic-bezier(0.215, 0.61, 0.355, 1) 0.2s both;
+  animation: flip-unfold-down 0.3s cubic-bezier(0.15, 0.6, 0.35, 1) 0.3s both;
 }
 
 .flip-leaf-back .flip-shadow-overlay {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent);
-  animation: shadow-out 0.22s ease-out 0.2s both;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
+  animation: shadow-out 0.3s ease-out 0.3s both;
 }
 
 @keyframes flip-fold-down {
@@ -247,13 +256,13 @@
     opacity: 0;
   }
   100% {
-    opacity: 0.9;
+    opacity: 0.8;
   }
 }
 
 @keyframes shadow-out {
   0% {
-    opacity: 0.9;
+    opacity: 0.8;
   }
   100% {
     opacity: 0;

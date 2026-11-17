@@ -1,6 +1,12 @@
-# My Clock
+<p align="center">
+  <img src="docs/images/logo.png" width="140" alt="My Clock Mascot Logo" />
+</p>
 
-A minimal, lightweight, cross-platform personal productivity application for **Windows** and **Android**, built with **React**, **TypeScript**, **Vite**, and **Tauri 2**.
+<h1 align="center">My Clock</h1>
+
+<p align="center">
+  A minimal, lightweight, cross-platform personal productivity application for <b>Windows</b> and <b>Android</b>, built with <b>React</b>, <b>TypeScript</b>, <b>Vite</b>, and <b>Tauri 2</b>.
+</p>
 
 ---
 

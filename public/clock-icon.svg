@@ -1,10 +1,152 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-  <rect width="100" height="100" rx="22" fill="#18181b"/>
-  <rect x="8" y="14" width="38" height="72" rx="6" fill="#27272a" stroke="#3f3f46" stroke-width="2"/>
-  <rect x="54" y="14" width="38" height="72" rx="6" fill="#27272a" stroke="#3f3f46" stroke-width="2"/>
-  <line x1="8" y1="50" x2="46" y2="50" stroke="#18181b" stroke-width="2.5"/>
-  <line x1="54" y1="50" x2="92" y2="50" stroke="#18181b" stroke-width="2.5"/>
-  <text x="27" y="62" font-family="system-ui, sans-serif" font-weight="900" font-size="34" fill="#fafafa" text-anchor="middle">1</text>
-  <text x="73" y="62" font-family="system-ui, sans-serif" font-weight="900" font-size="34" fill="#fafafa" text-anchor="middle">2</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Soft blush radial gradient -->
+    <radialGradient id="blushGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff909e" stop-opacity="0.85"/>
+      <stop offset="55%" stop-color="#ff9caa" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ffaab6" stop-opacity="0"/>
+    </radialGradient>
 
+    <!-- Warm soft rim gradient for clock bezel -->
+    <linearGradient id="bezelGrad" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#ffe8c7"/>
+      <stop offset="50%" stop-color="#fedfae"/>
+      <stop offset="100%" stop-color="#fbd29c"/>
+    </linearGradient>
+
+    <!-- Subtle bell gradient -->
+    <linearGradient id="bellGrad" x1="25%" y1="20%" x2="75%" y2="80%">
+      <stop offset="0%" stop-color="#ffedf0"/>
+      <stop offset="100%" stop-color="#fdd7de"/>
+    </linearGradient>
+
+    <!-- Subtle foot gradient -->
+    <linearGradient id="footGrad" x1="20%" y1="20%" x2="80%" y2="80%">
+      <stop offset="0%" stop-color="#ffe6d6"/>
+      <stop offset="100%" stop-color="#f9c8a7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 1. Alarm Clock Bells (behind clock body) -->
+  <g id="bells">
+    <!-- Left Bell (tilted slightly CCW) -->
+    <g transform="translate(196, 122) rotate(-14)">
+      <ellipse cx="0" cy="0" rx="46" ry="42"
+               fill="url(#bellGrad)" stroke="#eb9ba6" stroke-width="7.5" stroke-linecap="round"/>
+    </g>
+    
+    <!-- Right Bell (tilted slightly CW) -->
+    <g transform="translate(398, 122) rotate(14)">
+      <ellipse cx="0" cy="0" rx="46" ry="42"
+               fill="url(#bellGrad)" stroke="#eb9ba6" stroke-width="7.5" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- 2. Alarm Clock Feet / Pegs (behind clock body) -->
+  <g id="feet">
+    <!-- Left Foot (angled outward ~36 deg) -->
+    <g transform="translate(198, 364) rotate(36)">
+      <rect x="-15" y="-6" width="30" height="58" rx="15"
+            fill="url(#footGrad)" stroke="#df9c7c" stroke-width="7" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Right Foot (angled outward ~-36 deg) -->
+    <g transform="translate(396, 364) rotate(-36)">
+      <rect x="-15" y="-6" width="30" height="58" rx="15"
+            fill="url(#footGrad)" stroke="#df9c7c" stroke-width="7" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- 3. Bear Body, Ears, Head & Face (behind clock body) -->
+  <g id="bear-behind">
+    <!-- Bear Left Ear -->
+    <g transform="translate(90, 192) rotate(-22)">
+      <!-- Outer Ear -->
+      <ellipse cx="0" cy="0" rx="22" ry="18"
+               fill="#fdf5ec" stroke="#9a7d70" stroke-width="6.5" stroke-linecap="round"/>
+      <!-- Inner Ear Pink -->
+      <ellipse cx="-1" cy="1" rx="12" ry="9" fill="#f8c3cc"/>
+    </g>
+
+    <!-- Bear Right Ear (peeking behind head / clock rim) -->
+    <g transform="translate(178, 166) rotate(24)">
+      <ellipse cx="0" cy="0" rx="17" ry="14"
+               fill="#fdf5ec" stroke="#9a7d70" stroke-width="6.5" stroke-linecap="round"/>
+      <ellipse cx="0" cy="0" rx="9" ry="7" fill="#f8c3cc"/>
+    </g>
+
+    <!-- Bear Lower Body & Back -->
+    <path d="M 120 258 C 108 288 110 334 130 364 C 138 374 154 370 158 356 C 164 336 168 304 176 280"
+          fill="#fdf5ec" stroke="#9a7d70" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Bear Cute Lower Foot/Toe -->
+    <ellipse cx="148" cy="365" rx="15" ry="11"
+             fill="#fdf5ec" stroke="#9a7d70" stroke-width="6"
+             transform="rotate(-15 148 365)"/>
+
+    <!-- Bear Head -->
+    <ellipse cx="138" cy="232" rx="60" ry="56"
+             fill="#fdf5ec" stroke="#9a7d70" stroke-width="7" stroke-linecap="round"
+             transform="rotate(-7 138 232)"/>
+
+    <!-- Bear Face Details -->
+    <!-- Left Eye -->
+    <ellipse cx="121" cy="237" rx="5.2" ry="6" fill="#46342e"/>
+    <!-- Right Eye -->
+    <ellipse cx="161" cy="223" rx="5.2" ry="6" fill="#46342e"/>
+    <!-- Cute Snout / Nose -->
+    <ellipse cx="144" cy="235" rx="6.2" ry="4.8" fill="#46342e"/>
+
+    <!-- Bear Rosy Cheek Blush -->
+    <circle cx="107" cy="257" r="18" fill="url(#blushGrad)"/>
+    <circle cx="172" cy="241" r="13" fill="url(#blushGrad)" opacity="0.6"/>
+  </g>
+
+  <!-- 4. Clock Body & Bezel -->
+  <g id="clock">
+    <!-- Outer Bezel Ring -->
+    <circle cx="298" cy="256" r="140"
+            fill="url(#bezelGrad)" stroke="#e6b274" stroke-width="7.5"/>
+
+    <!-- Inner Bezel Lighter Step -->
+    <circle cx="298" cy="256" r="124"
+            fill="#fff3dc" stroke="#efc892" stroke-width="3"/>
+
+    <!-- Clock Face Dial (Clean White) -->
+    <circle cx="298" cy="256" r="105"
+            fill="#ffffff" stroke="#ebc38e" stroke-width="4"/>
+
+    <!-- Hour Markers (12, 3, 6, 9) -->
+    <!-- 12 marker -->
+    <rect x="294.5" y="165" width="7" height="15" rx="3.5" fill="#4e382f"/>
+    <!-- 6 marker -->
+    <rect x="294.5" y="332" width="7" height="15" rx="3.5" fill="#4e382f"/>
+    <!-- 3 marker -->
+    <rect x="373" y="252.5" width="15" height="7" rx="3.5" fill="#4e382f"/>
+    <!-- 9 marker -->
+    <rect x="207" y="252.5" width="15" height="7" rx="3.5" fill="#4e382f"/>
+
+    <!-- Clock Hands (Time ~ 7:00) -->
+    <!-- Minute Hand (points straight up to 12) -->
+    <g>
+      <path d="M 294.8 256 L 294.8 206 C 294.8 202 291.5 200 291.5 196 C 291.5 190 298 181 298 181 C 298 181 304.5 190 304.5 196 C 304.5 200 301.2 202 301.2 206 L 301.2 256 Z"
+            fill="#4e382f"/>
+    </g>
+
+    <!-- Hour Hand (points down-left to ~7:00 / 223 degrees) -->
+    <g transform="translate(298, 256) rotate(223) translate(-298, -256)">
+      <path d="M 294.4 256 L 294.4 192 C 294.4 188 290.8 186 290.8 182 C 290.8 175 298 165 298 165 C 298 165 305.2 175 305.2 182 C 305.2 186 301.6 188 301.6 192 L 301.6 256 Z"
+            fill="#4e382f"/>
+    </g>
+
+    <!-- Center Pivot Cap -->
+    <circle cx="298" cy="256" r="8.5" fill="#4e382f"/>
+    <circle cx="298" cy="256" r="3" fill="#fdf5ec"/>
+  </g>
+
+  <!-- 5. Bear Paw Clutching the Clock Rim (In front of clock bezel) -->
+  <g id="bear-paw-front">
+    <path d="M 162 268 C 188 261 204 272 203 286 C 201 301 183 308 162 298 C 154 293 152 278 162 268 Z"
+          fill="#fdf5ec" stroke="#9a7d70" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -19,6 +19,8 @@ src-tauri/gen/
 *.app
 *.apk
 *.aab
+*.keystore
+*.jks
 
 # Logs
 npm-debug.log*

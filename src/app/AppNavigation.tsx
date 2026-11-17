@@ -19,7 +19,7 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
   const eyesTrackRef = useRef<HTMLDivElement | null>(null);
   const leaveTimerRef = useRef<number | null>(null);
 
-  const isExpanded = isHovered || isTouched;
+  const isExpanded = isHovered || isTouched || (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('island') === 'expanded');
 
   const handleMouseEnter = () => {
     if (leaveTimerRef.current) {

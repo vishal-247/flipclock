@@ -13,11 +13,22 @@ import '../styles/global.css';
 const SETTINGS_KEY = 'settings';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('clock');
+  const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
+    if (typeof window !== 'undefined') {
+      const tab = new URLSearchParams(window.location.search).get('tab');
+      if (tab === 'timer' || tab === 'pomodoro' || tab === 'clock') return tab;
+    }
+    return 'clock';
+  });
   const [settings, setSettings] = useState<AppSettings>(() => {
     return storageService.get<AppSettings>(SETTINGS_KEY, DEFAULT_SETTINGS);
   });
-  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return new URLSearchParams(window.location.search).get('settings') === 'true';
+    }
+    return false;
+  });
   const { isFullscreen, toggleFullscreen } = useFullscreen();
 
   // Apply theme to document

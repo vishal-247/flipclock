@@ -4,53 +4,73 @@ A minimal, lightweight, cross-platform personal productivity application for **W
 
 ---
 
-## Features
+## 📸 Application Showcase
 
-### 1. 🕰️ Flip Clock
-- **Realistic Split-Flap 3D Physics:** Multi-stage 3D card folding and unfolding with dynamic shadow overlays, central horizontal divider seam, and mechanical hinge pins.
-- **Synthesized Split-Flap Audio:** Zero-latency mechanical flap sounds synthesized in real-time via the Web Audio API without requiring any external audio files.
-- **Accurate Timekeeping:** Aligned to next-second boundaries and resynced upon window focus/visibility changes.
-- **12h / 24h Formats:** Instant format switching with dedicated AM/PM indicators.
-- **Date & Day Badge:** Displays current day of the week and date.
-- **Fullscreen Mode:** Distraction-free fullscreen view with keyboard shortcuts (`F` or `F11`, `ESC` to exit) and hover controls.
+### 1. 🕰️ Retro Flip Clock (Main View)
+Features authentic split-flap 3D physics, real-time synthesized mechanical flap sounds, date badges, AM/PM indicators, and a floating interactive Dynamic Island.
 
-### 2. ⏳ Countdown Timer
-- **Split-Flap Display:** Live countdown presented on flip cards.
-- **Quick Presets:** Instant 1m, 5m, 10m, 15m, and 30m shortcuts.
-- **Custom Durations:** Interactive hours, minutes, and seconds picker.
-- **Controls:** Start, pause, resume, and reset.
-- **Background Accuracy:** Timestamp-based countdown calculations (`Date.now()`) ensuring accuracy even when minimized or suspended.
-- **Alerts:** Completion chimes and native system notifications.
-
-### 3. 🍅 Pomodoro Timer
-- **Structured Sessions:** Focus Session (25 min default), Short Break (5 min default), and Long Break (15 min default).
-- **Session Progress:** Visual cycle dots tracking sessions before the next long break, plus a completed session counter.
-- **Controls:** Start, pause, resume, and skip session.
-- **Auto Transitions:** Optional automatic transitions to breaks or focus sessions.
-- **Customizable Intervals:** Configurable durations in Settings.
-
-### 4. 🎨 Themes & UI
-- **Dark Theme (Default):** Deep charcoal flip cards on an authentic black background.
-- **Light Theme:** High-contrast luxury flip clock styling.
-- **Local Persistence:** All states, settings, and themes are persisted across app restarts.
-- **Responsive Layout:** Adaptive scaling for mobile screens and desktop monitors.
+![Flip Clock View](docs/images/clock.png)
 
 ---
 
-## Tech Stack
+### 2. 🏝️ Apple-Style Dynamic Island (Fluid Glassmorphic Navigation)
+The navigation bar behaves like an Apple Dynamic Island:
+- **Contracted:** A cute squircle mascot whose eyes smoothly follow your cursor across the screen with natural blinking.
+- **Expanded (on hover):** Smoothly expands with fluid spring physics (`cubic-bezier(0.16, 1, 0.3, 1)`) into a borderless frosted glass pill.
+
+![Dynamic Island Navigation](docs/images/dynamic-island.png)
+
+---
+
+### 3. ⏳ Countdown Timer
+Set custom durations or use quick presets (1m, 5m, 10m, 15m, 30m). Includes timestamp-based accuracy resilient to app suspension and minimization, melodic completion chimes, and system notifications.
+
+![Countdown Timer](docs/images/timer.png)
+
+---
+
+### 4. 🍅 Pomodoro Focus Timer
+Structured sessions for **Focus** (25 min default), **Short Break** (5 min default), and **Long Break** (15 min default), with interval tracking dots and session statistics.
+
+![Pomodoro Timer](docs/images/pomodoro.png)
+
+---
+
+### 5. ⚙️ Settings & Customization
+Fine-tune clock format (12h / 24h), dark & light themes, sound effects, system notifications, and Pomodoro session intervals.
+
+![Settings Modal](docs/images/settings.png)
+
+---
+
+## ⚡ Core Features
+
+- **Retro Split-Flap Animation:** Physically synchronized 3D folding and unfolding leaves with dynamic shadow overlays and hinge pins.
+- **Interactive Cursor-Tracking Mascot:** The Dynamic Island avatar smoothly watches your mouse cursor in real-time.
+- **Zero-Latency Audio:** Mechanical flap clicks and multi-tone alarm chimes synthesized via the Web Audio API without requiring external audio files.
+- **Timestamp-Accurate Timing:** Timers calculate elapsed time via epoch timestamps (`Date.now()`), preventing drift when the app is minimized, screen is off, or the device sleeps.
+- **Cross-Platform:** Single codebase running natively on Windows desktop and Android mobile via Tauri 2.
+- **100% Private & Offline:** Zero tracking, accounts, ads, or network dependencies.
+
+---
+
+## 🛠️ Tech Stack
+
 - **Frontend:** React 18 + TypeScript + Vite
-- **Desktop & Mobile Runtime:** Tauri 2
+- **Cross-Platform Runtime:** Tauri 2 (Desktop & Mobile)
+- **Styling & Physics:** CSS 3D Transforms (`rotateX`, `perspective`, `transform-origin`) with Apple spring easing
 - **Icons:** Lucide React
-- **Animations:** CSS 3D Transforms (`rotateX`, `perspective`, `transform-origin`)
 - **Sound:** Synthesized Web Audio API (offline, zero-latency)
-- **Notifications:** Tauri Plugin Notification with standard Web Notification fallback
+- **Notifications:** Cross-platform notification service integrating Tauri 2 Plugin Notification with Web Notification API fallback
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 flipclock/
+├── docs/
+│   └── images/                 # High-resolution application screenshots
 ├── index.html
 ├── package.json
 ├── vite.config.ts
@@ -58,18 +78,18 @@ flipclock/
 ├── src/
 │   ├── app/
 │   │   ├── App.tsx             # Main orchestrator & layout
-│   │   ├── AppHeader.tsx       # Top bar with theme, settings, fullscreen
-│   │   └── AppNavigation.tsx   # 3-tab navigation (Clock, Timer, Pomodoro)
+│   │   ├── AppHeader.tsx       # Header utilities
+│   │   └── AppNavigation.tsx   # Dynamic Island with cursor-tracking eyes
 │   ├── components/
 │   │   └── flip/
-│   │       ├── FlipCard.tsx    # 3D split flap card with top/bottom leaves
+│   │       ├── FlipCard.tsx    # 3D split-flap card with top/bottom leaves
 │   │       ├── FlipUnit.tsx    # Paired 2-digit unit (e.g. HH, MM, SS)
 │   │       └── FlipSeparator.tsx # Colon indicator dots
 │   ├── features/
 │   │   ├── clock/
-│   │   │   └── FlipClock.tsx   # Flip Clock view & controls
+│   │   │   └── FlipClock.tsx   # Flip Clock view, controls & date badge
 │   │   ├── timer/
-│   │   │   └── CountdownTimer.tsx # Timer view, presets & custom input
+│   │   │   └── CountdownTimer.tsx # Timer view, presets & custom picker
 │   │   └── pomodoro/
 │   │       └── PomodoroTimer.tsx  # Pomodoro view, cycle indicator & actions
 │   ├── hooks/
@@ -89,6 +109,7 @@ flipclock/
 │       ├── variables.css       # CSS design tokens & themes
 │       ├── global.css          # Base typography & layout
 │       ├── flipcard.css        # 3D transform keyframes & flap mechanics
+│       ├── dynamicIsland.css   # Apple-style spring physics & glassmorphism
 │       ├── clock.css           # Clock styling
 │       ├── timer.css           # Timer styling
 │       └── pomodoro.css        # Pomodoro styling
@@ -98,6 +119,7 @@ flipclock/
     ├── capabilities/
     │   └── default.json        # Tauri 2 security capabilities
     ├── build.rs
+    ├── icons/                  # Multi-resolution app icons
     └── src/
         ├── lib.rs              # Mobile & desktop entry point
         └── main.rs             # Windows subsystem bootstrap
@@ -105,7 +127,7 @@ flipclock/
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### 1. Web Development Server
 To run the web version locally in your browser:
@@ -120,23 +142,22 @@ npm run build
 ```
 
 ### 3. Desktop Application (Windows)
-When you have Rust installed on your machine:
 ```bash
+# Run in development mode with hot-reload
 npm run tauri dev
-```
-To build a production `.exe` / `.msi`:
-```bash
+
+# Build production executable / installer
 npm run tauri build
 ```
 
 ### 4. Android Build
-With Android Studio and the Android NDK configured:
 ```bash
+# Initialize Android project
 npm run tauri android init
+
+# Run on connected Android device or emulator
 npm run tauri android dev
-```
-To generate the release APK/AAB:
-```bash
+
+# Generate release APK / AAB
 npm run tauri android build
 ```
-
